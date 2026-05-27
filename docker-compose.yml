@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+
+  mysql-db:
+    image: mysql:8
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: librarydb
+    ports:
+      - "3307:3306"
+
+  library-app:
+    build: .
+    container_name: library-container
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql-db
