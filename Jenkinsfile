@@ -3,6 +3,12 @@ pipeline {
 
     stages {
 
+        stage('Clone Repository') {
+            steps {
+                git branch: 'main',
+                url: 'https://github.com/rexclement/library-management.git'
+            }
+        }
 
         stage('Build Maven Project') {
             steps {
