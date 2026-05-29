@@ -3,6 +3,12 @@ pipeline {
 
     stages {
 
+        stage('Clone Repository') {
+            steps {
+                git branch: 'main',
+                url: 'https://github.com/rexclement/library-management.git'
+            }
+        }
 
         stage('Build Maven Project') {
             steps {
@@ -11,15 +17,27 @@ pipeline {
             }
         }
 
-        stage('Stop Old Containers') {
+        stage('Build Docker Image') {
             steps {
-                sh 'docker compose down || true'
+                sh 'docker build -t library-app .'
             }
         }
 
-        stage('Build and Start Containers') {
+        stage('Stop Old Container') {
             steps {
-                sh 'docker compose up --build -d'
+                sh 'docker stop library-container || true'
+                sh 'docker rm library-container || true'
+            }
+        }
+
+        stage('Run New Container') {
+            steps {
+                sh '''
+                docker run -d \
+                  --name library-container \
+                  -p 8080:8080 \
+                  library-app
+                '''
             }
         }
 
