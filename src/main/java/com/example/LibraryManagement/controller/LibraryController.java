@@ -20,7 +20,7 @@ public class LibraryController {
     @Autowired
     LibraryService libraryService;
 
-    // CREATE BOOK with validation
+    // CREATE BOOK
     @PostMapping("/addBook")
     public Response createBook(@RequestBody BookRequest book){
 
